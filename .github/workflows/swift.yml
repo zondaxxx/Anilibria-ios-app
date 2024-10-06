@@ -1,0 +1,22 @@
+# This workflow will build a Swift project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-swift
+
+name: test-1
+
+on:
+  pull_request:
+    branches: ["main", "develop"]
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+
+    name: Unit Testing on iOS 16.2
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Select Xcode
+      run: sudo xcode-select -switch /Applications/Xcode.app && /usr/bin/xcodebuild -version
+    - name: Build and run tests
+      run: xcodebuild test -scheme YOUR_PACKAGE_TARGET_NAME -destination 'platform=iOS Simulator,name=iPhone 14 Pro,OS=16.2' | xcpretty && exit ${PIPESTATUS[0]}
